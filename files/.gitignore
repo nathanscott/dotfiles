@@ -1,7 +1,0 @@
-.DS_Store
-dontbackup
-.gitkeep
-*.tmproj
-.config/fish/fish*history
-.config/fish/fishd.*
-db/sphinx/**/*
