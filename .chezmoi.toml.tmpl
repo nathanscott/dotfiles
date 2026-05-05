@@ -1,0 +1,26 @@
+{{/* Prompts shown on first `chezmoi init`. Re-edit later via `chezmoi edit-config`. */}}
+
+{{- $name        := promptStringOnce . "name" "Your full name" "Nate" -}}
+{{- $email       := promptStringOnce . "email" "Git email" "nathan@riparide.com" -}}
+{{- $githubUser  := promptStringOnce . "githubUser" "GitHub username" "nathanscott" -}}
+{{- $isWork      := promptBoolOnce . "isWork" "Work machine?" false -}}
+{{- $installCasks := false -}}
+{{- if eq .chezmoi.os "darwin" -}}
+  {{- $installCasks = promptBoolOnce . "installCasks" "Install GUI apps (casks)?" true -}}
+{{- end -}}
+{{- $useOnePassword := promptBoolOnce . "useOnePassword" "Use 1Password CLI for secrets?" (eq .chezmoi.os "darwin") -}}
+
+[data]
+    name           = {{ $name | quote }}
+    email          = {{ $email | quote }}
+    githubUser     = {{ $githubUser | quote }}
+    isWork         = {{ $isWork }}
+    installCasks   = {{ $installCasks }}
+    useOnePassword = {{ $useOnePassword }}
+
+[diff]
+    pager = "delta"
+
+[merge]
+    command = "nvim"
+    args = ["-d"]

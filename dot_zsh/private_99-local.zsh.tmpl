@@ -1,0 +1,23 @@
+{{- /*
+  Per-machine secrets / env.
+  Rendered by `chezmoi apply`. Lives at ~/.zsh/99-local.zsh.
+  Permissions: 0600 (private_ prefix).
+
+  Add 1Password references like:
+    export ANTHROPIC_API_KEY="{{`{{ onepasswordRead "op://Personal/Anthropic/credential" }}`}}"
+
+  They're commented out by default — uncomment as you actually need them, so
+  failed lookups don't break a fresh `chezmoi apply`.
+*/ -}}
+
+# === 1Password-injected secrets ===
+{{ if .useOnePassword -}}
+# Uncomment + adjust paths to match your vaults:
+# export ANTHROPIC_API_KEY="{{`{{ onepasswordRead "op://Personal/Anthropic/credential" }}`}}"
+# export OPENAI_API_KEY="{{`{{ onepasswordRead "op://Personal/OpenAI/credential" }}`}}"
+# export GITHUB_TOKEN="{{`{{ onepasswordRead "op://Personal/GitHub PAT/credential" }}`}}"
+{{- else -}}
+# 1Password CLI not enabled on this machine; put plaintext env in ~/.zshrc.local
+{{- end }}
+
+# === Per-machine PATH/exports go in ~/.zshrc.local (untracked) ===

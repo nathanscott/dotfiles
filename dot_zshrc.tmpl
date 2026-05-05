@@ -1,0 +1,14 @@
+# ~/.zshrc — interactive shell config.
+# Sources numbered fragments from ~/.zsh/, then optional ~/.zshrc.local
+
+ZSH_FRAGMENTS_DIR="${ZDOTDIR:-$HOME}/.zsh"
+
+if [ -d "$ZSH_FRAGMENTS_DIR" ]; then
+  for fragment in "$ZSH_FRAGMENTS_DIR"/[0-9]*.zsh; do
+    [ -r "$fragment" ] && source "$fragment"
+  done
+  unset fragment
+fi
+
+# Per-machine, untracked overrides (work tokens, host-specific PATH tweaks, etc.)
+[ -f "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"

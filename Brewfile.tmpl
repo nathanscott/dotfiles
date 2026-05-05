@@ -1,0 +1,70 @@
+# Brewfile — installed by `brew bundle --file=~/.dotfiles/Brewfile` on macOS.
+# Templated: GUI casks gated on .installCasks (skip on minimal/server installs).
+# Re-runs automatically when this file changes (run_onchange_ script).
+
+# === Taps ===
+tap "homebrew/bundle"
+
+# === CLI core ===
+brew "antidote"           # zsh plugin manager
+brew "starship"           # prompt
+brew "mise"               # polyglot version manager (replaces rbenv/pyenv/nvm)
+brew "git"                # newer than Apple's
+brew "gh"                 # GitHub CLI
+brew "git-delta"          # gorgeous git diffs
+
+# === Modern CLI replacements (Rust era) ===
+brew "eza"                # ls replacement (git-aware, tree, hyperlinks)
+brew "bat"                # cat with syntax highlighting
+brew "fd"                 # find replacement (fast, .gitignore-aware)
+brew "ripgrep"            # grep replacement
+brew "zoxide"             # smart cd (replaces autojump/z)
+brew "atuin"              # SQLite shell history with fuzzy search
+brew "fzf"                # fuzzy finder (Ctrl+R, Ctrl+T)
+
+# === Utility ===
+brew "jq"                 # JSON
+brew "yq"                 # YAML
+brew "tree"               # directory tree
+brew "wget"               # urgh, curl is fine but...
+brew "tmux"               # terminal multiplexer
+brew "neovim"             # editor (paired with LazyVim starter)
+brew "htop"               # better top
+brew "tldr"               # man-page TL;DRs
+brew "openssh"            # newer than macOS default
+
+{{ if eq .chezmoi.os "darwin" -}}
+# === macOS-specific CLI ===
+brew "mas"                # Mac App Store CLI
+brew "coreutils"          # GNU coreutils (gls, gmkdir, etc. — for parity in scripts)
+brew "trash"              # safer rm
+
+# === Casks (GUI apps) ===
+{{ if .installCasks -}}
+cask "ghostty"                          # primary terminal
+cask "visual-studio-code"
+cask "cursor"
+cask "orbstack"                         # Docker Desktop replacement
+cask "rectangle"                        # window snapping
+cask "raycast"                          # spotlight replacement
+cask "1password"
+cask "1password-cli"
+
+# Fonts
+cask "font-jetbrains-mono-nerd-font"
+cask "font-symbols-only-nerd-font"
+
+# Optional — uncomment per-machine in your local Brewfile if wanted:
+# cask "google-chrome"
+# cask "arc"
+# cask "slack"
+# cask "discord"
+# cask "linear-linear"
+# cask "notion"
+# cask "figma"
+# cask "tableplus"
+# cask "postico"
+# cask "proxyman"
+# cask "obsidian"
+{{- end }}
+{{- end }}

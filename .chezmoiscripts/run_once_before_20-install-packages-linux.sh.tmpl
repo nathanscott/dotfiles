@@ -1,0 +1,86 @@
+{{- if eq .chezmoi.os "linux" -}}
+#!/bin/sh
+set -eu
+
+# Linux bootstrap — Debian/Ubuntu only for now (matches plan).
+# Installs: zsh, git, build essentials, modern CLI tools, mise.
+
+if ! command -v apt-get >/dev/null 2>&1; then
+  echo "ERROR: This installer only supports Debian/Ubuntu (apt-get). Got something else."
+  exit 1
+fi
+
+SUDO=""
+if [ "$(id -u)" -ne 0 ]; then
+  SUDO="sudo"
+fi
+
+echo "==> apt update..."
+$SUDO apt-get update -y
+
+echo "==> Installing core packages..."
+DEBIAN_FRONTEND=noninteractive $SUDO apt-get install -y --no-install-recommends \
+  zsh git curl ca-certificates build-essential pkg-config \
+  fzf ripgrep fd-find bat \
+  jq tree wget tmux neovim htop unzip
+
+# eza — not in Ubuntu repos until 24.04. Use the official keyring/repo.
+if ! command -v eza >/dev/null 2>&1; then
+  echo "==> Installing eza from upstream apt repo..."
+  $SUDO mkdir -p /etc/apt/keyrings
+  curl -fsSL https://raw.githubusercontent.com/eza-community/eza/main/deb.asc \
+    | $SUDO gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
+  echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" \
+    | $SUDO tee /etc/apt/sources.list.d/gierens.list >/dev/null
+  $SUDO chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
+  $SUDO apt-get update -y
+  $SUDO apt-get install -y eza
+fi
+
+# zoxide — install via official script (apt version is often stale)
+if ! command -v zoxide >/dev/null 2>&1; then
+  curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+fi
+
+# atuin — official installer
+if ! command -v atuin >/dev/null 2>&1; then
+  curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
+fi
+
+# starship — official installer
+if ! command -v starship >/dev/null 2>&1; then
+  curl -sS https://starship.rs/install.sh | sh -s -- -y
+fi
+
+# git-delta — apt as `git-delta`, but binary differs across distros; use GitHub release
+if ! command -v delta >/dev/null 2>&1; then
+  $SUDO apt-get install -y git-delta || true
+fi
+
+# gh — GitHub CLI (official apt repo)
+if ! command -v gh >/dev/null 2>&1; then
+  curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+    | $SUDO dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+  $SUDO chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
+  echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
+    | $SUDO tee /etc/apt/sources.list.d/github-cli.list >/dev/null
+  $SUDO apt-get update -y
+  $SUDO apt-get install -y gh
+fi
+
+# mise — official installer
+if ! command -v mise >/dev/null 2>&1; then
+  curl https://mise.run | sh
+fi
+
+# antidote — clone (no apt package)
+if [ ! -d "$HOME/.antidote" ]; then
+  git clone --depth=1 https://github.com/mattmc3/antidote.git "$HOME/.antidote"
+fi
+
+# Make zsh the default shell if it isn't
+if [ "$(basename "$SHELL")" != "zsh" ] && command -v zsh >/dev/null 2>&1; then
+  echo "==> Setting zsh as default shell. You may be prompted for your password."
+  chsh -s "$(command -v zsh)" || echo "(chsh failed — set it manually with: chsh -s \$(which zsh))"
+fi
+{{- end -}}

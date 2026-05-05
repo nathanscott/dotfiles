@@ -1,0 +1,23 @@
+{{- if eq .chezmoi.os "darwin" -}}
+#!/bin/sh
+set -eu
+
+# Bootstrap minimum tools we need before the Brewfile runs (Brewfile script needs `mise` for some flows;
+# everything else is installed in the bundle step).
+
+echo "==> Installing core bootstrap packages..."
+for pkg in chezmoi mise; do
+  if ! brew list --formula "$pkg" >/dev/null 2>&1; then
+    brew install "$pkg"
+  fi
+done
+
+# 1Password CLI (cask: 1password-cli, formula: just on Linux)
+{{ if .useOnePassword -}}
+if ! command -v op >/dev/null 2>&1; then
+  if ! brew list --cask 1password-cli >/dev/null 2>&1; then
+    brew install --cask 1password-cli
+  fi
+fi
+{{- end }}
+{{- end -}}

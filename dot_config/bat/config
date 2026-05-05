@@ -1,0 +1,4 @@
+# bat config — see `bat --list-themes` for options.
+--theme="Monokai Extended"
+--style="numbers,changes,header"
+--paging=auto

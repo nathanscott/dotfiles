@@ -1,0 +1,15 @@
+# Global mise config. Per-project versions live in `.tool-versions` or `.mise.toml`.
+# Docs: https://mise.jdx.dev/configuration.html
+
+[tools]
+# Sensible defaults — uncomment + pin as you need them on this machine.
+# node   = "lts"
+# python = "3.12"
+# ruby   = "3.3"
+# go     = "latest"
+# rust   = "stable"
+
+[settings]
+experimental         = true
+idiomatic_version_file_enable_tools = ["ruby", "node", "python"]
+not_found_auto_install = true

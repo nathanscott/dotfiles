@@ -1,0 +1,48 @@
+# Global gitignore — applies to every repo.
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
+
+# Linux
+.directory
+.Trash-*
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.netrwhist
+Session.vim
+.nvimlog
+
+# Build artifacts (project gitignores should still cover these, but safety net)
+*.log
+*.pid
+*.seed
+*.pid.lock
+
+# Direnv
+.envrc
+.direnv/
+
+# Claude Code working files
+.claude/*
+!.claude/CLAUDE.md
+!.claude/skills/
+
+# Temp
+*.tmp
+.tmp/
+
+# Personal conventions (preserved from prior ~/.gitignore)
+dontbackup
+.gitkeep
+*.tmproj

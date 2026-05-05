@@ -1,0 +1,11 @@
+# External resources managed by chezmoi.
+# Refreshed on `chezmoi update` (default: every 7 days).
+
+[".config/nvim"]
+    type    = "git-repo"
+    url     = "https://github.com/LazyVim/starter.git"
+    refreshPeriod = "168h"
+    [".config/nvim".clone]
+        args = ["--depth", "1"]
+    [".config/nvim".pull]
+        args = ["--ff-only"]

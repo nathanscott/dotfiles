@@ -1,0 +1,86 @@
+[user]
+    name  = {{ .name | quote }}
+    email = {{ .email | quote }}
+
+[github]
+    user = {{ .githubUser | quote }}
+
+[init]
+    defaultBranch = main
+
+[core]
+    excludesfile = ~/.gitignore
+    editor       = {{ if eq .chezmoi.os "darwin" }}"code --wait"{{ else }}"nvim"{{ end }}
+    pager        = delta
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate     = true
+    light        = false
+    line-numbers = true
+    side-by-side = false
+    syntax-theme = "Monokai Extended"
+
+[merge]
+    conflictstyle = zdiff3
+    tool          = nvim
+
+[mergetool "nvim"]
+    cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+
+[diff]
+    colorMoved   = default
+    algorithm    = histogram
+    renames      = copies
+
+[pull]
+    rebase = true
+
+[push]
+    default      = simple
+    autoSetupRemote = true
+    followTags   = true
+
+[rebase]
+    autoSquash = true
+    autoStash  = true
+
+[fetch]
+    prune     = true
+    pruneTags = true
+
+[rerere]
+    enabled = true
+
+[branch]
+    sort = -committerdate
+
+[tag]
+    sort = version:refname
+
+[help]
+    autocorrect = prompt
+
+[color]
+    ui = auto
+
+[alias]
+    co  = checkout
+    cob = checkout -b
+    br  = branch
+    st  = status -sb
+    ci  = commit
+    aa  = add --all
+    cm  = commit -m
+    cma = commit -am
+    amend = commit --amend --no-edit
+    unstage = reset HEAD --
+    last = log -1 HEAD
+    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+    sync = !git fetch --all --prune && git pull --rebase
+
+{{ if .isWork -}}
+# Work-machine overrides go here (e.g. signing key, alternate user.email by directory)
+{{- end }}

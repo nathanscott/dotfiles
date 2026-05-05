@@ -1,0 +1,22 @@
+# Ghostty config — minimal starter.
+# Docs: https://ghostty.org/docs/config
+
+font-family       = "JetBrainsMono Nerd Font"
+font-size         = 14
+theme             = "Tokyo Night"
+window-padding-x  = 12
+window-padding-y  = 12
+window-decoration = true
+mouse-hide-while-typing = true
+
+# macOS
+macos-titlebar-style = "tabs"
+macos-option-as-alt  = true
+
+# Cursor
+cursor-style       = "bar"
+cursor-style-blink = true
+
+# Shell integration
+shell-integration         = "zsh"
+shell-integration-features = "cursor,sudo,title"

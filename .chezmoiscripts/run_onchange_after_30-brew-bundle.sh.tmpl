@@ -1,0 +1,16 @@
+{{- if eq .chezmoi.os "darwin" -}}
+#!/bin/sh
+# Re-runs whenever the rendered Brewfile changes (hash baked into a comment below).
+# Brewfile sha256: {{ include "Brewfile.tmpl" | sha256sum }}
+
+set -eu
+
+BREWFILE="$(mktemp)"
+trap 'rm -f "$BREWFILE"' EXIT
+
+chezmoi execute-template < "{{ .chezmoi.sourceDir }}/Brewfile.tmpl" > "$BREWFILE"
+
+echo "==> brew bundle..."
+brew bundle --no-lock --file="$BREWFILE"
+echo "==> brew bundle done."
+{{- end -}}

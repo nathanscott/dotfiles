@@ -1,0 +1,30 @@
+# ~/.zshenv — sourced for ALL zsh invocations (login, interactive, scripts).
+# Keep this fast and minimal: PATH only.
+
+# Homebrew (Apple Silicon first, Intel fallback)
+if [ -x /opt/homebrew/bin/brew ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [ -x /usr/local/bin/brew ]; then
+  eval "$(/usr/local/bin/brew shellenv)"
+fi
+
+# User-local bins (chezmoi, mise shims, pip --user, etc.)
+typeset -U path
+path=(
+  "$HOME/.local/bin"
+  "$HOME/bin"
+  $path
+)
+export PATH
+
+# Default editor — VS Code if present (waits for save), nvim/vi fallback for SSH/CI
+if command -v code >/dev/null 2>&1; then
+  export EDITOR='code --wait'
+  export VISUAL='code --wait'
+elif command -v nvim >/dev/null 2>&1; then
+  export EDITOR='nvim'
+  export VISUAL='nvim'
+else
+  export EDITOR='vi'
+  export VISUAL='vi'
+fi

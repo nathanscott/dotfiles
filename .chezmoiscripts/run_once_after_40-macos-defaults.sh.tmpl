@@ -1,0 +1,62 @@
+{{- if eq .chezmoi.os "darwin" -}}
+#!/bin/sh
+# Curated macOS defaults — re-runnable.
+# Doesn't `set -e` because some `defaults` lookups complain on first run; that's fine.
+
+echo "==> Applying macOS defaults (you may be prompted for your password)..."
+
+# === Keyboard ===
+defaults write NSGlobalDomain KeyRepeat -int 2          # fast key repeat
+defaults write NSGlobalDomain InitialKeyRepeat -int 15  # short delay
+defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false  # holding key = repeat, not popup
+defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
+defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
+defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
+defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
+defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
+
+# === Trackpad ===
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
+defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
+
+# === Finder ===
+defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+defaults write com.apple.finder AppleShowAllFiles -bool true             # show hidden
+defaults write com.apple.finder ShowPathbar -bool true
+defaults write com.apple.finder ShowStatusBar -bool true
+defaults write com.apple.finder _FXSortFoldersFirst -bool true
+defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"      # search current folder by default
+defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
+
+# === Dock ===
+defaults write com.apple.dock autohide -bool true
+defaults write com.apple.dock autohide-delay -float 0
+defaults write com.apple.dock autohide-time-modifier -float 0.15
+defaults write com.apple.dock show-recents -bool false
+defaults write com.apple.dock mru-spaces -bool false
+defaults write com.apple.dock tilesize -int 48
+
+# === Screenshots ===
+mkdir -p "$HOME/Pictures/Screenshots"
+defaults write com.apple.screencapture location -string "$HOME/Pictures/Screenshots"
+defaults write com.apple.screencapture type -string "png"
+defaults write com.apple.screencapture disable-shadow -bool true
+
+# === Misc UX ===
+defaults write NSGlobalDomain AppleInterfaceStyle -string "Dark"        # dark mode
+defaults write NSGlobalDomain NSWindowResizeTime -float 0.001
+defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool false
+defaults write com.apple.LaunchServices LSQuarantine -bool false        # no "are you sure" on apps you downloaded
+
+# === Safari (web inspector) ===
+defaults write com.apple.Safari IncludeDevelopMenu -bool true
+defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
+defaults write com.apple.Safari "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" -bool true
+defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
+
+echo "==> macOS defaults applied. Some changes need a logout or app restart to take effect."
+killall Finder 2>/dev/null || true
+killall Dock   2>/dev/null || true
+killall SystemUIServer 2>/dev/null || true
+{{- end -}}
