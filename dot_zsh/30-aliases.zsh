@@ -12,12 +12,11 @@ alias gr='git remote -v'
 alias gmd='git merge --no-ff --no-edit develop'
 alias p='ping 8.8.8.8 | perl -nle '\''print scalar(localtime), " ", $_'\'''
 alias o='open'
-# Force VS Code explicitly — Cursor also installs a `code` shim that can win on PATH
-if [ -x "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" ]; then
-  VSCODE_BIN='/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code'
-  alias s="$VSCODE_BIN"
-  alias c="$VSCODE_BIN"
-  unset VSCODE_BIN
+# Pin VS Code to its Homebrew symlink — guaranteed to be VS Code (Homebrew prefix wins
+# PATH precedence over Cursor's /usr/local/bin/code shim) and has no spaces.
+if [ -x /opt/homebrew/bin/code ]; then
+  alias s='/opt/homebrew/bin/code'
+  alias c='/opt/homebrew/bin/code'
 else
   alias s='code'
   alias c='code'

@@ -17,10 +17,14 @@ path=(
 )
 export PATH
 
-# Default editor — prefer VS Code (explicit path so Cursor's `code` shim can't hijack it).
-if [ -x "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" ]; then
-  export EDITOR='/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code --wait'
+# Default editor — prefer VS Code (Homebrew-installed `code` symlink; no path-with-spaces
+# headaches and won't be hijacked because Homebrew's prefix is earlier in PATH than /usr/local).
+if [ -x /opt/homebrew/bin/code ]; then
+  export EDITOR='/opt/homebrew/bin/code --wait'
   export VISUAL="$EDITOR"
+elif command -v code >/dev/null 2>&1; then
+  export EDITOR='code --wait'
+  export VISUAL='code --wait'
 elif command -v nvim >/dev/null 2>&1; then
   export EDITOR='nvim'
   export VISUAL='nvim'
