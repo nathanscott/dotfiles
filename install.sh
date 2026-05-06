@@ -2,7 +2,7 @@
 # install.sh — entrypoint for `curl | sh` bootstrap on a fresh Mac or Debian/Ubuntu box.
 #
 # Usage:
-#   sh -c "$(curl -fsLS https://raw.githubusercontent.com/nathanscott/dot-files/master/install.sh)"
+#   sh -c "$(curl -fsLS https://raw.githubusercontent.com/nathanscott/dotfiles/master/install.sh)"
 #
 # Or, equivalently (chezmoi's blessed one-liner):
 #   sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply nathanscott
@@ -12,7 +12,7 @@
 set -eu
 
 GH_USER="${GH_USER:-nathanscott}"
-DOTFILES_REPO="${DOTFILES_REPO:-dot-files}"   # GitHub repo name; chezmoi accepts user OR user/repo
+DOTFILES_REPO="${DOTFILES_REPO:-dotfiles}"   # GitHub repo name; chezmoi accepts user OR user/repo
 
 BIN_DIR="${HOME}/.local/bin"
 mkdir -p "$BIN_DIR"

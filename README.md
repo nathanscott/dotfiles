@@ -1,4 +1,4 @@
-# dot-files
+# dotfiles
 
 Personal dotfiles. Bootstraps a fresh Mac or Debian/Ubuntu box end-to-end.
 
@@ -7,13 +7,13 @@ Personal dotfiles. Bootstraps a fresh Mac or Debian/Ubuntu box end-to-end.
 On any new machine:
 
 ```sh
-sh -c "$(curl -fsLS https://raw.githubusercontent.com/nathanscott/dot-files/master/install.sh)"
+sh -c "$(curl -fsLS https://raw.githubusercontent.com/nathanscott/dotfiles/master/install.sh)"
 ```
 
 Or, equivalently, the [chezmoi](https://chezmoi.io) one-liner:
 
 ```sh
-sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply nathanscott/dot-files
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply nathanscott/dotfiles
 ```
 
 Both install chezmoi (to `~/.local/bin`), clone this repo to `~/.local/share/chezmoi`, prompt for a few values (email, work-vs-personal, etc.), and apply everything.
