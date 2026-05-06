@@ -12,8 +12,16 @@ alias gr='git remote -v'
 alias gmd='git merge --no-ff --no-edit develop'
 alias p='ping 8.8.8.8 | perl -nle '\''print scalar(localtime), " ", $_'\'''
 alias o='open'
-alias s='code'
-alias c='code'
+# Force VS Code explicitly — Cursor also installs a `code` shim that can win on PATH
+if [ -x "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" ]; then
+  VSCODE_BIN='/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code'
+  alias s="$VSCODE_BIN"
+  alias c="$VSCODE_BIN"
+  unset VSCODE_BIN
+else
+  alias s='code'
+  alias c='code'
+fi
 alias t='tail -f'
 
 # === Extra git quality-of-life ===
@@ -33,13 +41,15 @@ alias gdc='git diff --cached'
 # === Modern-tool overlays ===
 if command -v eza >/dev/null 2>&1; then
   alias ls='eza --group-directories-first'
-  alias ll='eza -lh --group-directories-first --git'
-  alias la='eza -lah --group-directories-first --git'
+  alias l='eza -lah --group-directories-first --git'        # main: long, all, human
+  alias ll='eza -lh --group-directories-first --git'        # long, no hidden
+  alias la='eza -a --group-directories-first'               # all, no long
   alias lt='eza --tree --level=2'
   alias llt='eza -lh --tree --level=2 --git'
 else
+  alias l='ls -lah'
   alias ll='ls -lh'
-  alias la='ls -lAh'
+  alias la='ls -a'
 fi
 
 if command -v bat >/dev/null 2>&1; then

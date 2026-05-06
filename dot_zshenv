@@ -17,10 +17,10 @@ path=(
 )
 export PATH
 
-# Default editor — VS Code if present (waits for save), nvim/vi fallback for SSH/CI
-if command -v code >/dev/null 2>&1; then
-  export EDITOR='code --wait'
-  export VISUAL='code --wait'
+# Default editor — prefer VS Code (explicit path so Cursor's `code` shim can't hijack it).
+if [ -x "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" ]; then
+  export EDITOR='/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code --wait'
+  export VISUAL="$EDITOR"
 elif command -v nvim >/dev/null 2>&1; then
   export EDITOR='nvim'
   export VISUAL='nvim'
