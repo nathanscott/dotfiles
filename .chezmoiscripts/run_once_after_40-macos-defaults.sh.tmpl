@@ -50,10 +50,12 @@ defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool false
 defaults write com.apple.LaunchServices LSQuarantine -bool false        # no "are you sure" on apps you downloaded
 
 # === Safari (web inspector) ===
-defaults write com.apple.Safari IncludeDevelopMenu -bool true
-defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
-defaults write com.apple.Safari "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" -bool true
-defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
+# Safari is sandboxed in modern macOS — direct `defaults write com.apple.Safari` is blocked
+# unless Terminal has Full Disk Access. Skip silently if it fails.
+defaults write com.apple.Safari IncludeDevelopMenu -bool true 2>/dev/null || true
+defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true 2>/dev/null || true
+defaults write com.apple.Safari "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" -bool true 2>/dev/null || true
+defaults write NSGlobalDomain WebKitDeveloperExtras -bool true 2>/dev/null || true
 
 echo "==> macOS defaults applied. Some changes need a logout or app restart to take effect."
 killall Finder 2>/dev/null || true

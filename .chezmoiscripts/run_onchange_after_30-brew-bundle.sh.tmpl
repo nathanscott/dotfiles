@@ -11,6 +11,6 @@ trap 'rm -f "$BREWFILE"' EXIT
 chezmoi execute-template < "{{ .chezmoi.sourceDir }}/Brewfile.tmpl" > "$BREWFILE"
 
 echo "==> brew bundle..."
-brew bundle --no-lock --file="$BREWFILE"
+brew bundle install --file="$BREWFILE"
 echo "==> brew bundle done."
 {{- end -}}
