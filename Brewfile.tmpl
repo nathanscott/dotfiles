@@ -28,7 +28,7 @@ brew "tmux"               # terminal multiplexer
 brew "neovim"             # editor (paired with LazyVim starter)
 brew "htop"               # better top
 brew "tldr"               # man-page TL;DRs
-brew "openssh"            # newer than macOS default
+# Note: NOT installing `openssh` — Apple's ships with `UseKeychain` patch which Homebrew's lacks.
 
 {{ if eq .chezmoi.os "darwin" -}}
 # === macOS-specific CLI ===
