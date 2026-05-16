@@ -4,9 +4,15 @@
 {{- $email       := promptStringOnce . "email" "Git email" "nathan@riparide.com" -}}
 {{- $githubUser  := promptStringOnce . "githubUser" "GitHub username" "nathanscott" -}}
 {{- $isWork      := promptBoolOnce . "isWork" "Work machine?" false -}}
-{{- /* noAdmin: skip Homebrew install, apt-get, casks, and macOS-defaults — user-local install only. */ -}}
-{{- $noAdminDefault := (eq (env "DOTFILES_NO_ADMIN") "1") -}}
-{{- $noAdmin     := promptBoolOnce . "noAdmin" "No-admin mode? (skip brew/apt/casks)" $noAdminDefault -}}
+{{- /* noAdmin: skip Homebrew install, apt-get, casks — user-local install only.
+       DOTFILES_NO_ADMIN=1 (set by `install.sh --no-admin`) is authoritative and bypasses
+       the prompt — otherwise prompt-once with default false. */ -}}
+{{- $noAdmin := false -}}
+{{- if eq (env "DOTFILES_NO_ADMIN") "1" -}}
+  {{- $noAdmin = true -}}
+{{- else -}}
+  {{- $noAdmin = promptBoolOnce . "noAdmin" "No-admin mode? (skip brew/apt/casks)" false -}}
+{{- end -}}
 {{- $installCasks := false -}}
 {{- if and (eq .chezmoi.os "darwin") (not $noAdmin) -}}
   {{- $installCasks = promptBoolOnce . "installCasks" "Install GUI apps (casks)?" true -}}
