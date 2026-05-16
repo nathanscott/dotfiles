@@ -18,6 +18,18 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply nathanscott/dotfiles
 
 Both install chezmoi (to `~/.local/bin`), clone this repo to `~/.local/share/chezmoi`, prompt for a few values (email, work-vs-personal, etc.), and apply everything.
 
+### No-admin mode
+
+For locked-down machines where you can't `sudo` (corporate hosts, shared boxes, jump hosts):
+
+```sh
+sh -c "$(curl -fsLS https://raw.githubusercontent.com/nathanscott/dotfiles/master/install.sh)" -- --no-admin
+```
+
+This skips Homebrew, apt-get, and casks. A user-local bootstrap installs antidote, mise, and starship into `$HOME`. Everything else (eza, bat, fd, ripgrep, fzf, atuin, gh, …) is optional — the shell fragments gate on `command -v` and degrade gracefully when a tool is missing.
+
+The flag is sticky: it's stored in `~/.config/chezmoi/chezmoi.toml` so future `chezmoi apply` runs keep skipping admin steps. Flip it later with `chezmoi edit-config`.
+
 ## What you get
 
 - **Zsh** with [Antidote](https://getantidote.github.io) for plugins, [Starship](https://starship.rs) for the prompt

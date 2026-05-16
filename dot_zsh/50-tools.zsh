@@ -22,6 +22,8 @@ if [[ -o interactive ]]; then
     [ -f /opt/homebrew/opt/fzf/shell/completion.zsh ]   && source /opt/homebrew/opt/fzf/shell/completion.zsh
     [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh
     [ -f /usr/share/doc/fzf/examples/completion.zsh ]   && source /usr/share/doc/fzf/examples/completion.zsh
+    [ -f "$HOME/.fzf/shell/key-bindings.zsh" ]          && source "$HOME/.fzf/shell/key-bindings.zsh"
+    [ -f "$HOME/.fzf/shell/completion.zsh" ]            && source "$HOME/.fzf/shell/completion.zsh"
 
     if command -v fd >/dev/null 2>&1; then
       export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'

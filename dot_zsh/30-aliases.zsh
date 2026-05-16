@@ -22,6 +22,8 @@ else
   alias c='code'
 fi
 alias t='tail -f'
+alias bi='bundle install'
+alias be='bundle exec'
 
 # === Extra git quality-of-life ===
 alias gs='git status'
@@ -36,6 +38,11 @@ alias gf='git fetch --all --prune'
 alias gst='git stash'
 alias gstp='git stash pop'
 alias gdc='git diff --cached'
+alias gpr='git pull --rebase'
+alias gb='git branch'
+alias gba='git branch --all'
+alias gbl='git blame -w'
+alias gc='git commit --verbose'
 
 # === Modern-tool overlays ===
 if command -v eza >/dev/null 2>&1; then

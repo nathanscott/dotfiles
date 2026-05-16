@@ -32,3 +32,6 @@ else
   export EDITOR='vi'
   export VISUAL='vi'
 fi
+
+# mise: auto-load .env from the current directory (gated by `mise trust`)
+export MISE_ENV_FILE=.env

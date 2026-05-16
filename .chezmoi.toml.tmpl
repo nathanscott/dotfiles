@@ -4,17 +4,21 @@
 {{- $email       := promptStringOnce . "email" "Git email" "nathan@riparide.com" -}}
 {{- $githubUser  := promptStringOnce . "githubUser" "GitHub username" "nathanscott" -}}
 {{- $isWork      := promptBoolOnce . "isWork" "Work machine?" false -}}
+{{- /* noAdmin: skip Homebrew install, apt-get, casks, and macOS-defaults — user-local install only. */ -}}
+{{- $noAdminDefault := (eq (env "DOTFILES_NO_ADMIN") "1") -}}
+{{- $noAdmin     := promptBoolOnce . "noAdmin" "No-admin mode? (skip brew/apt/casks)" $noAdminDefault -}}
 {{- $installCasks := false -}}
-{{- if eq .chezmoi.os "darwin" -}}
+{{- if and (eq .chezmoi.os "darwin") (not $noAdmin) -}}
   {{- $installCasks = promptBoolOnce . "installCasks" "Install GUI apps (casks)?" true -}}
 {{- end -}}
-{{- $useOnePassword := promptBoolOnce . "useOnePassword" "Use 1Password CLI for secrets?" (eq .chezmoi.os "darwin") -}}
+{{- $useOnePassword := promptBoolOnce . "useOnePassword" "Use 1Password CLI for secrets?" (and (eq .chezmoi.os "darwin") (not $noAdmin)) -}}
 
 [data]
     name           = {{ $name | quote }}
     email          = {{ $email | quote }}
     githubUser     = {{ $githubUser | quote }}
     isWork         = {{ $isWork }}
+    noAdmin        = {{ $noAdmin }}
     installCasks   = {{ $installCasks }}
     useOnePassword = {{ $useOnePassword }}
 
