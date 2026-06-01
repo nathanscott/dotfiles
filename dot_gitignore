@@ -38,6 +38,11 @@ Session.vim
 !.claude/CLAUDE.md
 !.claude/skills/
 
+# Local config
+mise.local.toml
+.mcp.local.json
+settings.local.json
+
 # Temp
 *.tmp
 .tmp/
